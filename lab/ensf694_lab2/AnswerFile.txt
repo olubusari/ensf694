@@ -1,0 +1,20 @@
+Compare their running times and show them. Which one performed better and why?
+
+Linear Search running time: 5900
+Interpolation running time: 577300
+
+In this case the Linear Search performed better.  This is because there was not sorting done before the search.
+
+Sorting the data can add a little bit more time to the running time. Another factor could be the input data.
+
+
+
+Try to improve the running time of the linear search by at least 20% and explain your logic
+
+I improved the Linear search by 30 percent and used the technique called Sentinel Linear Search.
+
+The reason behind the sentinel linear search is to put the key we are searching for at the end of the array briefly. 
+
+This operates as a sentinel value that lets us avoid the similarity check in each repetition of the loop. 
+
+Instead, we only need to check the termination condition.

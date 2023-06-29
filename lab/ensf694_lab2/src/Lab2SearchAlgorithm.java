@@ -1,68 +1,17 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Oludare Busari
+ *
+ */
+//Class implements Search Algorithms
 public class Lab2SearchAlgorithm {
 
 	static Scanner scanner = new Scanner(System.in);
-
-	public static int linearSearch(int[] array, int key) {
-
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == key)
-				return i; // key FOUND and index returned
-		}
-		return -1; // key NOT FOUND and -1 returned
-	}
-
-	public static int interpolationSearch(int[] arr, int target) {
-		Arrays.sort(arr);
-		int low = 0;
-		int high = arr.length-1;
-
-		while (low <= high && target >= arr[low] && target <= arr[high]) {
-			if (low == high) {
-				if (arr[low] == target)
-					return low;
-				return -1;
-			}
-
-			int pos = low + (((high - low) / (arr[high] - arr[low])) * (target - arr[low]));
-
-			if (arr[pos] == target)
-				return pos;
-
-			if (arr[pos] < target)
-				low = pos + 1;
-			else
-				high = pos - 1;
-		}
-		return -1;
-	}
 	
-	public static int improveLinearSearch(int[] array, int key) {
-		int length = array.length;
-	    int i = 0;
-
-	    while (i < length - 1) {
-	        if (array[i] == key)
-	            return i; // key FOUND and index returned
-
-	        if (array[i + 1] == key)
-	            return i + 1; // key FOUND and index returned
-
-	        i += 2;
-	    }
-
-	    // Check the last element if the array length is odd
-	    if (i == length - 1 && array[i] == key)
-	        return i; // key FOUND and index returned
-
-	    return -1; // key NOT FOUND and -1 returned
-		
-	}
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		scanner = new Scanner(System.in);
 		int arraySize;
 		int arr[];
@@ -77,39 +26,112 @@ public class Lab2SearchAlgorithm {
 		}
 
 		System.out.print("Enter the search key: ");
-
 		int key = scanner.nextInt();
 
 		System.out.println("\nUsing Linear Search");
-		
+
 		long linearSearchStartTime = System.nanoTime();
-		int linearSearchOutput =  linearSearch(arr, key);
+		int linearSearchOutput = linearSearch(arr, key);
 		long linearSearchEndTime = System.nanoTime();
-		
-		System.out.print("Search key FOUND at index: " + linearSearchOutput);
+
+		if (linearSearchOutput != -1) {
+			System.out.print("Search key FOUND at index: " + linearSearchOutput);
+		} else {
+			System.out.println("Search key NOT FOUND.");
+		}
 
 		System.out.println("\n\nUsing Interpolation Search");
-		
+
 		long interpolationSearchStartTime = System.nanoTime();
 		int interpolationSearchOutput = interpolationSearch(arr, key);
 		long interpolationSearchEndTime = System.nanoTime();
 
-		System.out.print("Search key FOUND at index: " + interpolationSearchOutput);
+		if (interpolationSearchOutput != -1) {
+			System.out.print("Search key FOUND at index: " + interpolationSearchOutput);
+		} else {
+			System.out.println("Search key NOT FOUND.");
+		}
 		System.out.println();
-		
+
 		System.out.println("\n\nUsing Improved Linear Search");
-		
+
 		long improveLinearSearchStartTime = System.nanoTime();
 		int improvedLinearSearchOutput = improveLinearSearch(arr, key);
 		long improveLinearSearchEndTime = System.nanoTime();
-		
-		System.out.print("Search key FOUND at index: " + improvedLinearSearchOutput);
+
+		if (improvedLinearSearchOutput != -1) {
+			System.out.print("Search key FOUND at index: " + improvedLinearSearchOutput);
+		} else {
+			System.out.println("Search key NOT FOUND.");
+		}
 		System.out.println();
-		
+
 		System.out.println("\nLinear Search running time: " + (linearSearchEndTime - linearSearchStartTime));
-		System.out.println("Interpolation Search running time: " + (interpolationSearchEndTime - interpolationSearchStartTime));
-		System.out.println("Improved Linear Search running time: " + (improveLinearSearchEndTime - improveLinearSearchStartTime));
-		
+		System.out.println(
+				"Interpolation Search running time: " + (interpolationSearchEndTime - interpolationSearchStartTime));
+		System.out.println(
+				"Improved Linear Search running time: " + (improveLinearSearchEndTime - improveLinearSearchStartTime));
+
 	}
 
+
+	// Class method responsible for Linear Search
+	public static int linearSearch(int[] array, int key) {
+
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == key)
+				return i; // key FOUND and index returned
+		}
+		return -1; // key NOT FOUND and -1 returned
+	}
+
+	//class method used for interpolation search
+	public static int interpolationSearch(int[] arr, int target) {
+		Arrays.sort(arr);
+		int lowInter = 0;
+		int highInter = arr.length - 1;
+
+		while (lowInter <= highInter && target >= arr[lowInter] && target <= arr[highInter]) {
+			if (lowInter == highInter) {
+				if (arr[lowInter] == target)
+					return lowInter;
+				return -1;
+			}
+
+			int pos = lowInter + (((highInter - lowInter) / (arr[highInter] - arr[lowInter])) * (target - arr[lowInter]));
+
+			if (arr[pos] == target)
+				return pos;
+
+			if (arr[pos] < target)
+				lowInter = pos + 1;
+			else
+				highInter = pos - 1;
+		}
+		return -1;
+	}
+
+	// class method that uses Sentinel Linear Search to improve the linear search
+	public static int improveLinearSearch(int[] array, int key) {
+		int length = array.length;
+		int lastElementItem = array[length - 1]; // Store the last element
+
+		// Replace the last element item with the key (sentinel value)
+		array[length - 1] = key;
+
+		int y = 0;
+		while (array[y] != key) {
+			y++;
+		}
+
+		// Restore the original last element item
+		array[length - 1] = lastElementItem;
+
+		if (y < length - 1 || array[length - 1] == key) {
+			return y; // Key found at index i
+		} else {
+			return -1; // Key not found
+		}
+
+	}
 }
